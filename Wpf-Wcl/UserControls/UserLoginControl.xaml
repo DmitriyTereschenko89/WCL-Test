@@ -31,5 +31,10 @@
             Grid.Row="4"
             Margin="10"
             Content="Sign in"/>
+        <Button
+            Visibility="Hidden"
+            Grid.Row="4"
+            Margin="10"
+            Content="Logout"/>
     </Grid>
 </UserControl>

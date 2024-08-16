@@ -10,16 +10,16 @@ namespace Wpf_Wcl.UserControls
     {
         public static readonly DependencyProperty InformationProperty = DependencyProperty.Register("Information", typeof(string), typeof(ViewControl));
 
-        public ViewControl()
+        public ViewControl(string information = "default information!")
         {
             InitializeComponent();
-            Information = "Please log in or sign up";
+            Information = information;
         }
 
         public string Information
         {
-            get => (string)GetValue(InformationProperty);
-            set => SetValue(InformationProperty, value);
+            get => Dispatcher.Invoke(() => (string)GetValue(InformationProperty));
+            set => Dispatcher.Invoke(() => SetValue(InformationProperty, value));
         }
     }
 }

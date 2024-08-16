@@ -1,26 +1,27 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Input;
-using Wpf_Wcl.Commands;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Wpf_Wcl.ViewModels
 {
     public class MenuItemViewModel : VIewModelBase
     {
-        public MenuItemViewModel()
-        {
-            Command = new RelayCommand((param) => Execute());
-        }
-
         public string Header { get; set; }
 
-        public ObservableCollection<MenuItemViewModel> MenuItems { get; set; }
+        public IAsyncRelayCommand Command { get; set; }
 
-        public ICommand Command { get; }
+        public ObservableCollection<MenuItemViewModel> Submenu { get; set; }
 
-        private void Execute()
+        public MenuItemViewModel()
         {
-            _ = MessageBox.Show("Clicked at " + Header);
+            Submenu = [];
+        }
+
+        public MenuItemViewModel(string header, IAsyncRelayCommand command, ObservableCollection<MenuItemViewModel> submenu = null)
+        {
+            Header = header;
+            Command = command;
+
+            Submenu = submenu ?? [];
         }
     }
 }
