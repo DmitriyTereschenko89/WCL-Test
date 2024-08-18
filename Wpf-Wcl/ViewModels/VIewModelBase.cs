@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Wpf_Wcl.ViewModels
 {
-    public class VIewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

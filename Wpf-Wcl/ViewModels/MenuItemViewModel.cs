@@ -1,13 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 
 namespace Wpf_Wcl.ViewModels
 {
-    public class MenuItemViewModel : VIewModelBase
+    public class MenuItemViewModel : ViewModelBase
     {
         public string Header { get; set; }
 
-        public IAsyncRelayCommand Command { get; set; }
+        public ICommand Command { get; set; }
 
         public ObservableCollection<MenuItemViewModel> Submenu { get; set; }
 
@@ -16,7 +16,7 @@ namespace Wpf_Wcl.ViewModels
             Submenu = [];
         }
 
-        public MenuItemViewModel(string header, IAsyncRelayCommand command, ObservableCollection<MenuItemViewModel> submenu = null)
+        public MenuItemViewModel(string header, ICommand command = null, ObservableCollection<MenuItemViewModel> submenu = null)
         {
             Header = header;
             Command = command;

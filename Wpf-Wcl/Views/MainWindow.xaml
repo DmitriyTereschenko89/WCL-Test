@@ -1,13 +1,12 @@
-﻿<Window x:Class="Wpf_Wcl.UserControls.MainWindow"
+﻿<Window x:Class="Wpf_Wcl.CustomControls.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Wpf_Wcl.UserControls"
-        xmlns:uc="clr-namespace:Wpf_Wcl.UserControls"
-        xmlns:mi="clr-namespace:Wpf_Wcl.ViewModels"
+        xmlns:local="clr-namespace:Wpf_Wcl.CustomControls"
+        xmlns:mi="clr-namespace:Wpf_Wcl.ViewModels" d:DataContext="{d:DesignInstance Type=mi:MainWindowViewModel}"
         mc:Ignorable="d"
-        WindowState="Normal"
+        WindowStartupLocation="CenterScreen"
         Title="Wpf Wcl" Height="600" Width="700">
     <DockPanel>
         <Menu DockPanel.Dock="Top" ItemsSource="{Binding MenuItems}">
@@ -29,7 +28,7 @@
             </Grid.ColumnDefinitions>
             <Grid
                 Grid.Column="0">
-                <ContentControl Content="{Binding SelectedPage}" />
+                <ContentControl Content="{Binding SelectedInformation}"/>
             </Grid>
             <Grid
                 Grid.Column="1">
@@ -37,15 +36,14 @@
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <ContentControl 
-                    Grid.Row="0"
-                    Content="{Binding UserLoginControl}"/>
+                <ContentControl Content="{Binding UserLoginControl}"/>
                 <Button 
                     Grid.Row="1"
                     Height="30"
                     Margin="10 0 10 10"
                     VerticalAlignment="Bottom"
-                    Content="Sign up"/>
+                    Content="Sign up"
+                    Command="{Binding RegistrationCommand}"/>
             </Grid>            
         </Grid>
     </DockPanel>
