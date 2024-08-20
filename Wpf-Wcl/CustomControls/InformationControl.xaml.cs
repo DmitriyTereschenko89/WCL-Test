@@ -8,11 +8,9 @@ namespace Wpf_Wcl.CustomControls
     /// </summary>
     public partial class InformationControl : UserControl
     {
-        public InformationControl(string information = "Default information")
+        public InformationControl(InformationViewModel informationViewModel)
         {
             InitializeComponent();
-            var informationViewModel = new InformationViewModel();
-            informationViewModel.Information = information;
             DataContext = informationViewModel;
         }
     }

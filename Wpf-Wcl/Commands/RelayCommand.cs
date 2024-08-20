@@ -1,7 +1,7 @@
-﻿namespace Wpf_Wcl.Commands
-{
-    using System.Windows.Input;
+﻿using System.Windows.Input;
 
+namespace Wpf_Wcl.Commands
+{
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;

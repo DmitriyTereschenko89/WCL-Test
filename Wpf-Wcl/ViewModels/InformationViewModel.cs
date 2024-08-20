@@ -4,6 +4,11 @@
     {
         private string _information;
 
+        public InformationViewModel(string information = "Default information.")
+        {
+            Information = information;
+        }
+
         public string Information
         {
             get => _information;

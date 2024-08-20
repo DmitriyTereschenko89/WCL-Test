@@ -1,8 +1,9 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Wpf_Wcl.Common;
-using Wpf_Wcl.Services;
 using Wpf_Wcl.CustomControls;
+using Wpf_Wcl.Profiles;
+using Wpf_Wcl.Services;
 using Wpf_Wcl.ViewModels;
 
 namespace Wpf_Wcl
@@ -16,10 +17,16 @@ namespace Wpf_Wcl
 
         private void ConfigureServices(ServiceCollection services)
         {
+            _ = services.AddHttpClient("apiservice", (serviceProvider, client) =>
+            {
+                client.DefaultRequestHeaders.Add("accept", "application/json");
+                client.BaseAddress = new Uri("https://petstore.swagger.io/v2/");
+            });
+            _ = services.AddAutoMapper(typeof(UserProfile));
             _ = services.AddScoped<MainWindow>();
             _ = services.AddScoped<UserLoginControl>();
             _ = services.AddScoped<BindablePasswordBox>();
-            _ = services.AddScoped<LoginViewModel>();
+            _ = services.AddSingleton<LoginViewModel>();
             _ = services.AddScoped<RegistrationViewModel>();
             _ = services.AddSingleton<MainWindowViewModel>();
             _ = services.AddScoped<IApiService, ApiService>();

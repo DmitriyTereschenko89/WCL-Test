@@ -13,7 +13,7 @@
             Margin="5 0 0 0"
             Content="Username"/>
         <TextBox
-            Margin="5 0 0 0"
+            Margin="5 0 5 0"
             Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label 
             Margin="5 0 0 0"
@@ -24,25 +24,25 @@
             Margin="5 0 0 0"
             Content="First name"/>
         <TextBox
-            Margin="5 0 0 0"
+            Margin="5 0 5 0"
             Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label 
             Margin="5 0 0 0"
             Content="Last name"/>
         <TextBox
-            Margin="5 0 0 0"
+            Margin="5 0 5 0"
             Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label 
             Margin="5 0 0 0"
             Content="Phone"/>
         <TextBox
-            Margin="5 0 0 0"
+            Margin="5 0 5 0"
             Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Label 
             Margin="5 0 0 0"
             Content="Email"/>
         <TextBox
-            Margin="5 0 0 0"
+            Margin="5 0 5 0"
             Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Button 
             Margin="5"

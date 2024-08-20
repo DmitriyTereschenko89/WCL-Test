@@ -1,29 +1,46 @@
-﻿using System.Security;
+﻿using System.Net;
+using System.Security;
 using System.Windows.Input;
+using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
 using Wpf_Wcl.Common;
+using Wpf_Wcl.Data_Transfer_Objects;
 using Wpf_Wcl.Models;
 
 namespace Wpf_Wcl.ViewModels
 {
     public class RegistrationViewModel : ViewModelBase
     {
-        private readonly User _user;
+        private readonly UserDto _user;
+        private readonly IMapper _mapper;
         private readonly IApiService _apiService;
 
-        private async Task Registration()
+        private async Task<User> Registration()
         {
-            var user = await _apiService.RegisterAsync(_user);
+            var user = _mapper.Map<User>(_user);
+            var netCredential = new NetworkCredential(_user.UserName, _user.Password);
+            user.Username = netCredential.UserName;
+            user.Password = netCredential.Password;
+            var newUser = await _apiService.RegisterAsync(user);
+            if (newUser != null)
+            {
+                CloseWindow.Execute(this);
+                return newUser;
+            }
+
+            return null;
         }
 
-        public RegistrationViewModel(IApiService apiService)
+        public RegistrationViewModel(IApiService apiService, IMapper mapper)
         {
             _user = new();
             _apiService = apiService;
+            _mapper = mapper;
             RegistrationCommand = new AsyncRelayCommand((param) => Registration());
         }
 
         public IAsyncRelayCommand RegistrationCommand { get; set; }
+        public ICommand CloseWindow { get; set; }
 
         public string UserName
         {
@@ -77,10 +94,10 @@ namespace Wpf_Wcl.ViewModels
 
         public string PhoneNumber
         {
-            get => _user.PhoneNumber;
+            get => _user.Phone;
             set
             {
-                _user.PhoneNumber = value;
+                _user.Phone = value;
                 OnPropertyChanged(nameof(PhoneNumber));
             }
         }

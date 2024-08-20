@@ -1,9 +1,9 @@
-﻿namespace Wpf_Wcl.CustomControls
-{
-    using System.Security;
-    using System.Windows;
-    using System.Windows.Controls;
+﻿using System.Security;
+using System.Windows;
+using System.Windows.Controls;
 
+namespace Wpf_Wcl.CustomControls
+{
     /// <summary>
     /// Interaction logic for BindablePasswordBox.xaml
     /// </summary>

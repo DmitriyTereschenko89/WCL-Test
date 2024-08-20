@@ -9,6 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
         <TextBlock
+            Margin="5"
             TextWrapping="WrapWithOverflow"
             Text="{Binding Information, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>

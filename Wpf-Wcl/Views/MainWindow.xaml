@@ -28,7 +28,34 @@
             </Grid.ColumnDefinitions>
             <Grid
                 Grid.Column="0">
-                <ContentControl Content="{Binding SelectedInformation}"/>
+                <StackPanel>
+                    <Grid 
+                        Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Content="Search:"/>
+                        <TextBox
+                            Text="{Binding SearchName}"
+                            Height="20"
+                            Width="150"
+                            TextAlignment="Left"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Grid.Column="1"/>
+                        <Button
+                            Height="20"
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            Command="{Binding SearchCommand}"
+                            Grid.Column="2"
+                            Content="Search"/>
+                    </Grid>
+                    <ContentControl Content="{Binding SelectedInformation}"/>
+                </StackPanel>                
             </Grid>
             <Grid
                 Grid.Column="1">

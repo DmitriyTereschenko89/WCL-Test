@@ -7,23 +7,36 @@
              xmlns:viewModel="clr-namespace:Wpf_Wcl.ViewModels" d:DataContext="{d:DesignInstance Type=viewModel:LoginViewModel}"
              mc:Ignorable="d"          
              d:DesignHeight="150" d:DesignWidth="300">
-    <StackPanel
+    <Grid>
+        <StackPanel
+            Visibility="{Binding VisibleLogin}"
         Margin="10">
-        <Label
+            <Label
             Margin="5 0 5 0"
             Content="Login"/>
-        <TextBox
+            <TextBox
             Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             Margin="5 0 5 0"/>
-        <Label 
+            <Label 
             Margin="5 0 5 0"
             Content="Password"/>
-        <local:BindablePasswordBox
+            <local:BindablePasswordBox
             Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <Button
+            <Label
+                Content="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <Button
             Margin="5"
             Command="{Binding LoginCommand}"
         Content="Sign in"/>
-    </StackPanel>
-
+        </StackPanel>
+        <StackPanel
+            
+            Visibility="{Binding VisibleLogout}">
+            <Button
+                Command="{Binding LogoutCommand}"
+                Margin="5"
+                Content="Log out"
+        />
+        </StackPanel>
+    </Grid>
 </UserControl>

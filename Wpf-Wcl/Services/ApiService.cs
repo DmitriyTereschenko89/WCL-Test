@@ -1,61 +1,51 @@
 ﻿using System.Net;
 using System.Net.Http;
-using Newtonsoft.Json;
+using System.Text;
+using System.Text.Json;
 using Wpf_Wcl.Common;
 using Wpf_Wcl.Models;
 
 namespace Wpf_Wcl.Services
 {
-    public class ApiService : IApiService
+    public class ApiService(IHttpClientFactory httpClientFactory) : IApiService
     {
-        private readonly HttpClient _httpClient;
-
-        public ApiService()
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("https://petstore.swagger.io/v2/") };
-        }
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true,
+        };
 
         public async Task<User> LoginAsync(NetworkCredential networkCredential)
         {
-            var url = $"{_httpClient.BaseAddress}user/login?username={networkCredential.UserName}&password={networkCredential.Password}";
-            var response = await _httpClient.GetAsync(url);
-            return response.IsSuccessStatusCode
-                ? await GetUserAsync(networkCredential.UserName)
-                : JsonConvert.DeserializeObject<User>(string.Empty);
+            var httpClient = _httpClientFactory.CreateClient("apiservice");
+            var response = await httpClient.GetAsync($"user/login?username={networkCredential.UserName}&password={networkCredential.Password}");
+            return response.IsSuccessStatusCode ? await GetUserAsync(networkCredential.UserName) : null;
         }
 
         public async Task<User> RegisterAsync(User user)
         {
-            /*curl -X 'POST' \
-  'https://petstore.swagger.io/v2/user' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "id": 0,
-  "username": "admin",
-  "firstName": "ivan",
-  "lastName": "ivanov",
-  "email": "test@gmail.com",
-  "password": "12345",
-  "phone": "111-11-11",
-  "userStatus": 1
-}'*/
-            var response = await _httpClient.PostAsync("user", new StringContent(JsonConvert.SerializeObject(user)));
-            return JsonConvert.DeserializeObject<User>(await response.Content.ReadAsStringAsync());
+            var httpClient = _httpClientFactory.CreateClient("apiservice");
+            string jsonUser = JsonSerializer.Serialize(user, _jsonSerializerOptions);
+            var content = new StringContent(jsonUser, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync("user", content);
+            return response.IsSuccessStatusCode ? await GetUserAsync(user.Username) : null;
         }
 
         public async Task LogoutAsync()
         {
-            _ = await _httpClient.GetAsync("user/logout");
+            var httpClient = _httpClientFactory.CreateClient("apiservice");
+            _ = await httpClient.GetAsync("user/logout");
         }
 
         public async Task<User> GetUserAsync(string username)
         {
-            var url = $"{_httpClient.BaseAddress}user/{username}";
-            var response = await _httpClient.GetAsync(url);
-            var data = await response.Content.ReadAsStringAsync();
-            var user = JsonConvert.DeserializeObject<User>(data);
-            return user;
+            var httpClient = _httpClientFactory.CreateClient("apiservice");
+            var url = $"user/{username}";
+            var response = await httpClient.GetAsync(url);
+            return response.IsSuccessStatusCode
+                ? JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync(), _jsonSerializerOptions)
+                : null;
         }
     }
 }
