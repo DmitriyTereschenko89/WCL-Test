@@ -30,12 +30,11 @@
         Content="Sign in"/>
         </StackPanel>
         <StackPanel
-            
             Visibility="{Binding VisibleLogout}">
             <Button
                 Command="{Binding LogoutCommand}"
-                Margin="5"
-                Content="Log out"
+                Margin="5 115"
+                Content="Sign out"
         />
         </StackPanel>
     </Grid>

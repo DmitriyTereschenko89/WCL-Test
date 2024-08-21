@@ -5,7 +5,9 @@ using System.Windows;
 using System.Windows.Input;
 using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Options;
 using Wpf_Wcl.Common;
+using Wpf_Wcl.Configurations;
 using Wpf_Wcl.CustomControls;
 using Wpf_Wcl.Data_Transfer_Objects;
 using Wpf_Wcl.Views;
@@ -15,10 +17,7 @@ namespace Wpf_Wcl.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly string _defaultInformation = "Please sign in or sign up.";
-        private readonly string _informationAboutProgrammer = "Dmitriy Tereshchenko\r\n.Net Developer\r\n• Have 4+ years experience in working with .Net technologies;\r\n• Good understanding of programming practices, OOP principles and design patterns;\r\n• Experienced in working with messaging queues such as RabbitMQ;\r\n• Experienced in MS SQL, Entity Framework and other related database technologies;\r\n• Motivated and willing to develop person and always try to go out personal boundaries;\r\n• Experienced in a product company in the education domain;\r\n• Passionate about LeetCode, HackerRank etc. Solved 700+ tasks on LeetCode and 300+ on other\r\nresources;";
-        private readonly string _visible = "Visible";
-        private readonly string _hidden = "Hidden";
+        private readonly DefaultConfig _defaultConfig;
         private readonly Dictionary<int, InformationControl> _informations;
         private readonly Dictionary<InformationControl, InformationViewModel> _informationViewModels;
         private readonly IApiService _apiService;
@@ -55,7 +54,7 @@ namespace Wpf_Wcl.ViewModels
             _loginViewModel.VisibleLogout = visibleLogout;
             if (user is null)
             {
-                _informationViewModels[_selectedInformation].Information = _defaultInformation;
+                _informationViewModels[_selectedInformation].Information = _defaultConfig.DefaultInformation;
                 return;
             }
 
@@ -79,7 +78,7 @@ namespace Wpf_Wcl.ViewModels
             var user = await _apiService.LoginAsync(new NetworkCredential(username ?? _loginViewModel.UserName, password ?? _loginViewModel.Password));
             if (user != null)
             {
-                ChangeAuth(_hidden, _visible, _mapper.Map<UserInformationDto>(user));
+                ChangeAuth(_defaultConfig.Hidden, _defaultConfig.Visible, _mapper.Map<UserInformationDto>(user));
                 return;
             }
 
@@ -89,7 +88,7 @@ namespace Wpf_Wcl.ViewModels
         private async Task Logout()
         {
             await _apiService.LogoutAsync();
-            ChangeAuth(_visible, _hidden);
+            ChangeAuth(_defaultConfig.Visible, _defaultConfig.Hidden);
         }
 
         private async Task Search()
@@ -111,14 +110,15 @@ namespace Wpf_Wcl.ViewModels
         public ObservableCollection<MenuItemViewModel> MenuItems { get; set; }
         public UserLoginControl UserLoginControl { get; set; }
 
-        public MainWindowViewModel(IApiService apiService, IMapper mapper, LoginViewModel loginViewModel, RegistrationViewModel registrationViewModel)
+        public MainWindowViewModel(IApiService apiService, IOptions<DefaultConfig> options, IMapper mapper, LoginViewModel loginViewModel, RegistrationViewModel registrationViewModel)
         {
+            _defaultConfig = options.Value;
             _apiService = apiService;
             _mapper = mapper;
             _informations = [];
             _informationViewModels = [];
-            var firstViewModel = new InformationViewModel(_defaultInformation);
-            var secondViewModel = new InformationViewModel(_informationAboutProgrammer);
+            var firstViewModel = new InformationViewModel(_defaultConfig.DefaultInformation);
+            var secondViewModel = new InformationViewModel(_defaultConfig.InformationAboutProgrammer);
             _informations[1] = new InformationControl(firstViewModel);
             _informations[2] = new InformationControl(secondViewModel);
             _informationViewModels[_informations[1]] = firstViewModel;
